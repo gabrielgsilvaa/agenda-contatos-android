@@ -1,11 +1,13 @@
 package br.com.alura.agenda;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,6 +28,7 @@ public class FormularioActivity extends AppCompatActivity {
     public static final int CODIGO_CAMERA = 567;
     private FormularioHelper helper;
     private String caminhoFoto;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,15 @@ public class FormularioActivity extends AppCompatActivity {
                 Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 caminhoFoto = getExternalFilesDir(null) +    "/"+ System.currentTimeMillis() +".jpg";
                 File arquivoFoto = new File(caminhoFoto);
-                intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));
+
+                // ANDROID 6
+                //intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));
+
+                // Android 7
+                intentCamera.putExtra(
+                        MediaStore.EXTRA_OUTPUT,
+                        FileProvider.getUriForFile(context,BuildConfig.APPLICATION_ID + ".provider", arquivoFoto));
+
                 startActivityForResult(intentCamera, CODIGO_CAMERA); // aguardando o resultado da activity
             }
         });
