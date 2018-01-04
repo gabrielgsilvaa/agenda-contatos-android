@@ -1,13 +1,17 @@
 package br.com.alura.agenda;
 
 import android.Manifest;
+
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.Browser;
 import android.support.annotation.NonNull;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Vibrator;
+
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -24,18 +28,26 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.zip.Inflater;
 
+import br.com.alura.agenda.adapter.AlunosAdapter;
+import br.com.alura.agenda.converter.AlunoConverter;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.modelo.Aluno;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
+    public static final int CODIGO_SMS = 555;
     private ListView listaAlunos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
+
+        //if (checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
+        //    requestPermissions(new String[] { Manifest.permission.RECEIVE_SMS } , CODIGO_SMS);
+        //}
 
         listaAlunos = (ListView) findViewById(R.id.lista_alunos);
 
@@ -52,9 +64,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 intentVaiParaFormulario.putExtra("aluno", aluno);
 
                 startActivity(intentVaiParaFormulario);
-
-
-
             }
 
         });
@@ -77,9 +86,15 @@ public class ListaAlunosActivity extends AppCompatActivity {
         List<Aluno> alunos = dao.buscaAlunos();
         dao.close();
 
+        //ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, R.layout.list_item, alunos);
+        //listaAlunos.setAdapter(adapter);
 
-        ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunos);
+        AlunosAdapter adapter = new AlunosAdapter(this, alunos);
         listaAlunos.setAdapter(adapter);
+
+        //Vibrator vibe = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
+        //vibe.vibrate(100);
+
     }
 
     @Override
@@ -164,5 +179,21 @@ public class ListaAlunosActivity extends AppCompatActivity {
             Toast.makeText(ListaAlunosActivity.this, "Permissão aceita com sucesso", Toast.LENGTH_SHORT).show();
         }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_lista_alunos, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.menu_enviar_notas:
+
+                new EnviaAlunosTask(this).execute();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
