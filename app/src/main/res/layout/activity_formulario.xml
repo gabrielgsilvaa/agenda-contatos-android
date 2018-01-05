@@ -33,27 +33,31 @@
             android:hint="Nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/formulario_nome"/>
+            android:id="@+id/formulario_nome"
+            android:singleLine="true"/>
 
         <EditText
             android:hint="Endereço"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/formulario_endereco"/>
+            android:id="@+id/formulario_endereco"
+            android:singleLine="true"/>
 
         <EditText
             android:hint="Telefone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            android:id="@+id/formulario_telefone"/>
+            android:id="@+id/formulario_telefone"
+            android:maxLength="13"/>
 
         <EditText
             android:hint="Site"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:id="@+id/formulario_site"/>
+            android:id="@+id/formulario_site"
+            android:singleLine="true"/>
 
         <RatingBar
             android:layout_width="wrap_content"
@@ -62,8 +66,6 @@
             android:max="10"
             android:layout_gravity="center"
             android:id="@+id/formulario_nota"/>
-
-
 
     </LinearLayout>
 
