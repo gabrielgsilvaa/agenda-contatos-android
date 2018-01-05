@@ -175,10 +175,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == 123) {
+        if(requestCode == 123){
             Toast.makeText(ListaAlunosActivity.this, "Permissão aceita com sucesso", Toast.LENGTH_SHORT).show();
         }
-    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_lista_alunos, menu);
