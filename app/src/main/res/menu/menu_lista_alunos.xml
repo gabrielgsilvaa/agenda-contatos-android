@@ -2,9 +2,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="br.com.alura.agenda.ListaAlunosActivity">
+
     <item
         android:id="@+id/menu_enviar_notas"
         android:title="Enviar Notas"
         android:icon="@drawable/ic_enviar"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_baixar_provas"
+        android:title="Baixar Provas"
+        android:icon="@drawable/ic_receber"
+        app:showAsAction="always" />
+
 </menu>

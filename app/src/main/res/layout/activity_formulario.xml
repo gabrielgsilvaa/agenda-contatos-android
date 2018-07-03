@@ -30,21 +30,21 @@
         </RelativeLayout>
 
         <EditText
-            android:hint="Nome"
+            android:hint="@string/campo_nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/formulario_nome"
             android:singleLine="true"/>
 
         <EditText
-            android:hint="Endereço"
+            android:hint="@string/campo_endereco"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/formulario_endereco"
             android:singleLine="true"/>
 
         <EditText
-            android:hint="Telefone"
+            android:hint="@string/campo_telefone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="phone"
@@ -52,7 +52,7 @@
             android:maxLength="13"/>
 
         <EditText
-            android:hint="Site"
+            android:hint="@string/campo_site"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"

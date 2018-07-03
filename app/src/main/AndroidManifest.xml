@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.alura.agenda">
 
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
@@ -14,27 +14,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".ListaAlunosActivity"
             android:label="@string/app_name">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".FormularioActivity"
-            android:label="Formulário">
-
-        </activity>
+            android:label="Formulário" />
 
         <receiver android:name=".receiver.SMSReceiver">
             <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
@@ -43,12 +38,14 @@
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
-        <meta-data
-            android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/provider_paths" />
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
         </provider>
 
-
+        <activity android:name=".ProvasActivity" />
+        <activity android:name=".DetalhesProvaActivity" />
+        <activity android:name=".ProvasTabletActivity"></activity>
     </application>
 
 </manifest>

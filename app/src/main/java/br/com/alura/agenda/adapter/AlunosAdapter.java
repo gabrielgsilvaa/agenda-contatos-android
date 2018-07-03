@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,6 +63,17 @@ public class AlunosAdapter extends BaseAdapter{
 
         TextView campoTelefone = (TextView) view.findViewById(R.id.item_telefone);
         campoTelefone.setText(aluno.getTelefone());
+
+
+        TextView campoEndereco = (TextView) view.findViewById(R.id.item_endereco);
+        if(campoEndereco != null){
+            campoEndereco.setText(aluno.getEndereco());
+        }
+
+        TextView campoSite = (TextView) view.findViewById(R.id.item_site);
+        if(campoSite != null){
+            campoSite.setText(aluno.getSite());
+        }
 
         ImageView campoFoto = (ImageView) view.findViewById(R.id.item_foto);
         String caminhoFoto = aluno.getCaminhoFoto();
