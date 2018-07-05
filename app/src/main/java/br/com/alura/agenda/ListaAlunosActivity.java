@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Browser;
 import android.support.annotation.NonNull;
 
@@ -46,8 +47,10 @@ public class ListaAlunosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
 
-        if (checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
-            requestPermissions(new String[] { Manifest.permission.RECEIVE_SMS } , CODIGO_SMS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions(new String[] { Manifest.permission.RECEIVE_SMS } , CODIGO_SMS);
+            }
         }
 
         listaAlunos = (ListView) findViewById(R.id.lista_alunos);
@@ -194,10 +197,17 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
                 new EnviaAlunosTask(this).execute();
                 break;
+
             case R.id.menu_baixar_provas:
 
                 Intent vaiParaProvas = new Intent(this, ProvasActivity.class);
                 startActivity(vaiParaProvas);
+                break;
+
+            case R.id.menu_mapa:
+
+                Intent vaiParaMapa = new Intent(this, MapaActivity.class);
+                startActivity(vaiParaMapa);
                 break;
         }
 
