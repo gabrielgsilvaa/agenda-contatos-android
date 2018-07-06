@@ -51,6 +51,8 @@ public class MapaFragment extends SupportMapFragment implements OnMapReadyCallba
             }
         }
         alunoDao.close();
+
+        new Localizador(getContext(), googleMap);
     }
 
     private LatLng pegaCoordenadaDoEndereco(String endereco){
