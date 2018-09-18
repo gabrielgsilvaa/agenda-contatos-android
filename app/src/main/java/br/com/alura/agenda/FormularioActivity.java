@@ -22,6 +22,7 @@ import java.io.File;
 
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.modelo.Aluno;
+import br.com.alura.agenda.tasks.InsereAlunoTask;
 
 public class FormularioActivity extends AppCompatActivity {
 
@@ -100,6 +101,10 @@ public class FormularioActivity extends AppCompatActivity {
                 }
 
                 dao.close();
+
+
+                new InsereAlunoTask(aluno).execute();
+
 
                 Toast.makeText(FormularioActivity.this, "Aluno '"+aluno.getNome()+"', salvo com sucesso!", Toast.LENGTH_SHORT).show();
 
