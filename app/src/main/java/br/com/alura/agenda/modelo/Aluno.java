@@ -1,5 +1,7 @@
 package br.com.alura.agenda.modelo;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +10,7 @@ import java.io.Serializable;
 
 public class Aluno implements Serializable {
 
+    @SerializedName("idCliente")
     private Long id;
     private String nome;
     private String endereco;
