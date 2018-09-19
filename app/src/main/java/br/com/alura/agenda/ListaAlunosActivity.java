@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
@@ -88,6 +89,10 @@ public class ListaAlunosActivity extends AppCompatActivity {
     private void carregaLista() {
         AlunoDAO dao = new AlunoDAO(this);
         List<Aluno> alunos = dao.buscaAlunos();
+
+        for(Aluno aluno : alunos){
+            Log.i("id do aluno", String.valueOf(aluno.getId()));
+        }
         dao.close();
 
         //ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, R.layout.list_item, alunos);

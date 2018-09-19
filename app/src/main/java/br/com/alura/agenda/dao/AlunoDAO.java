@@ -20,7 +20,7 @@ public class AlunoDAO extends SQLiteOpenHelper{
 
 
     public AlunoDAO(Context context) {
-        super(context, "db_Agenda", null, 2);
+        super(context, "db_Agenda", null, 3);
     }
 
     @Override
@@ -47,9 +47,28 @@ public class AlunoDAO extends SQLiteOpenHelper{
                 sqLiteDatabase.execSQL(sql);
 
             case 2:
-                // para novos casos
-                //sql = "ALTER TABLE Alunos ADD COLUMN cpf TEXT";
-                //sqLiteDatabase.execSQL(sql);
+                String criandoTabelaNova = "CREATE TABLE Alunos_novo " +
+                        "(id CHAR(36) PRIMARY KEY, " +
+                        "nome TEXT NOT NULL, " +
+                        "endereco TEXT, " +
+                        "telefone TEXT, " +
+                        "site TEXT, " +
+                        "nota REAL, " +
+                        "caminhoFoto TEXT)";
+                sqLiteDatabase.execSQL(criandoTabelaNova);
+
+                String inserindoAlunosNaTabelaNova = "INSERT INTO Alunos_novo " +
+                        "(id, nome, endereco, telefone, site, nota, caminhoFoto) " +
+                        "select id, nome, endereco, telefone, site, nota, caminhoFoto FROM Alunos ";
+                sqLiteDatabase.execSQL(inserindoAlunosNaTabelaNova);
+
+                String removendoTabelaAntiga = "DROP TABLE Alunos";
+                sqLiteDatabase.execSQL(removendoTabelaAntiga);
+
+                String alterandoNomeTabelaNova = "ALTER TABLE Alunos_novo RENAME TO Alunos ";
+                sqLiteDatabase.execSQL(alterandoNomeTabelaNova);
+
+
         }
 
     }
