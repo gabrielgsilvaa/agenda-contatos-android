@@ -1,29 +1,28 @@
 package br.com.alura.agenda.modelo;
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
 
 /**
  * Created by glga on 09/12/2017.
  */
-
 public class Aluno implements Serializable {
 
-    @SerializedName("idCliente")
-    private Long id;
+    private String id;
     private String nome;
     private String endereco;
     private String telefone;
     private String site;
     private Double nota;
     private String caminhoFoto;
+    //@Expose(serialize = false, deserialize = false) private String desativado;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

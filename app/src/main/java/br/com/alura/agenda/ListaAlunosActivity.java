@@ -2,41 +2,36 @@ package br.com.alura.agenda;
 
 import android.Manifest;
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.provider.Browser;
 import android.support.annotation.NonNull;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Vibrator;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.transition.Transition;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 import br.com.alura.agenda.adapter.AlunosAdapter;
-import br.com.alura.agenda.converter.AlunoConverter;
 import br.com.alura.agenda.dao.AlunoDAO;
+import br.com.alura.agenda.dto.AlunoDTO;
 import br.com.alura.agenda.modelo.Aluno;
+import br.com.alura.agenda.retrofit.RetrofitInicializador;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
@@ -91,7 +86,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         List<Aluno> alunos = dao.buscaAlunos();
 
         for(Aluno aluno : alunos){
-            Log.i("id do aluno", String.valueOf(aluno.getId()));
+            Log.i("id do aluno? ", String.valueOf(aluno.getId()));
         }
         dao.close();
 
@@ -111,6 +106,24 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         super.onResume();
 
+        Call<AlunoDTO> lista = new RetrofitInicializador().getAlunoService().lista();
+
+        lista.enqueue(new Callback<AlunoDTO>() {
+            @Override
+            public void onResponse(Call<AlunoDTO> call, Response<AlunoDTO> response) {
+                AlunoDTO body = response.body();
+                AlunoDAO alunoDAO = new AlunoDAO(ListaAlunosActivity.this);
+                alunoDAO.sincronizaAluno(body.getAlunos());
+                alunoDAO.close();
+
+                carregaLista();
+            }
+
+            @Override
+            public void onFailure(Call<AlunoDTO> call, Throwable t) {
+                Log.e("Lista", t.getMessage());
+            }
+        });
         carregaLista();
     }
 
