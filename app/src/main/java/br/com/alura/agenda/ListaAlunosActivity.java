@@ -79,6 +79,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         });
 
         registerForContextMenu(listaAlunos);
+        buscaAlunos();
     }
 
     private void carregaLista() {
@@ -90,22 +91,17 @@ public class ListaAlunosActivity extends AppCompatActivity {
         }
         dao.close();
 
-        //ArrayAdapter<Aluno> adapter = new ArrayAdapter<Aluno>(this, R.layout.list_item, alunos);
-        //listaAlunos.setAdapter(adapter);
-
         AlunosAdapter adapter = new AlunosAdapter(this, alunos);
         listaAlunos.setAdapter(adapter);
-
-        //Vibrator vibe = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
-        //vibe.vibrate(100);
-
     }
 
     @Override
     protected void onResume() {
-
         super.onResume();
+        carregaLista();
+    }
 
+    private void buscaAlunos() {
         Call<AlunoDTO> lista = new RetrofitInicializador().getAlunoService().lista();
 
         lista.enqueue(new Callback<AlunoDTO>() {
@@ -124,7 +120,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 Log.e("Lista", t.getMessage());
             }
         });
-        carregaLista();
     }
 
     @Override
@@ -178,10 +173,28 @@ public class ListaAlunosActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
 
-                AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
-                dao.deletar(aluno);
-                dao.close();
-                carregaLista();
+                Call<Void> deleta = new RetrofitInicializador().getAlunoService().deleta(aluno.getId());
+
+                deleta.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                        AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
+                        dao.deletar(aluno);
+                        dao.close();
+                        carregaLista();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                        Toast.makeText(ListaAlunosActivity.this,
+                                "Não foi possível remover o aluno", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
 
                 Toast.makeText(ListaAlunosActivity.this, "Deletado Aluno '"+aluno.getNome()+"', com sucesso", Toast.LENGTH_SHORT).show();
 
