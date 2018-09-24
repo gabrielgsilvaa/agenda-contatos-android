@@ -1,0 +1,20 @@
+package br.com.alura.agenda;
+
+import android.util.Log;
+
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
+
+public class AgendaInstanceIDService extends FirebaseInstanceIdService {
+
+    @Override
+    public void onTokenRefresh(){
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d("token firebase", "Refreshed token: " + refreshedToken);
+
+        enviaTokenParaservidor(refreshedToken);
+    }
+
+    private void enviaTokenParaservidor(String refreshedToken) {
+    }
+}
