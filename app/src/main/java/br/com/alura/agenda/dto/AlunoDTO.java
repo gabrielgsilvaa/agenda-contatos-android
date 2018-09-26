@@ -9,11 +9,11 @@ public class AlunoDTO {
     private List<Aluno> alunos;
     private String momentoDaUltimaModificacao;
 
-    public List<Aluno> getAlunos() {
-        return alunos;
-    }
-
     public String getMomentoDaUltimaModificacao() {
         return momentoDaUltimaModificacao;
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
     }
 }
