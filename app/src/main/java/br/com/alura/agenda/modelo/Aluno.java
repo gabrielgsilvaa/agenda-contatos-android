@@ -16,6 +16,7 @@ public class Aluno implements Serializable {
     private String site;
     private Double nota;
     private String caminhoFoto;
+    private int desativado;
     //@Expose(serialize = false, deserialize = false) private String desativado;
 
     public String getId() {
@@ -77,5 +78,17 @@ public class Aluno implements Serializable {
 
     public void setCaminhoFoto(String caminhoFoto) {
         this.caminhoFoto = caminhoFoto;
+    }
+
+    public int getDesativado() {
+        return desativado;
+    }
+
+    public void setDesativado(int desativado) {
+        this.desativado = desativado;
+    }
+
+    public boolean estaDesativado() {
+        return desativado == 1;
     }
 }

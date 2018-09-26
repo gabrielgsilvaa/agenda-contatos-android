@@ -23,11 +23,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import br.com.alura.agenda.adapter.AlunosAdapter;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.dto.AlunoDTO;
+import br.com.alura.agenda.events.AtualizarListaAlunoEvent;
 import br.com.alura.agenda.modelo.Aluno;
 import br.com.alura.agenda.retrofit.RetrofitInicializador;
 import retrofit2.Call;
@@ -44,6 +49,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
+
+        EventBus eventBus = EventBus.getDefault();
+        eventBus.register(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
@@ -88,6 +96,11 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         registerForContextMenu(listaAlunos);
         buscaAlunos();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void atualizarListaAlunoEvent(AtualizarListaAlunoEvent event){
+        carregaLista();
     }
 
     private void carregaLista() {
@@ -192,7 +205,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
                     public void onResponse(Call<Void> call, Response<Void> response) {
 
                         AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
-                        dao.deletar(aluno);
+                        dao.deletaAluno(aluno);
                         dao.close();
                         carregaLista();
 

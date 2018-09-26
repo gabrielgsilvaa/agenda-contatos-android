@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -97,8 +96,12 @@ public class AlunoDAO extends SQLiteOpenHelper{
         for (Aluno aluno :
                 alunos) {
             if(existe(aluno)) {
-                alteraAluno(aluno);
-            }else{
+                if(aluno.estaDesativado()){
+                    deletaAluno(aluno);
+                }else {
+                    alteraAluno(aluno);
+                }
+            }else if(!aluno.estaDesativado()){
                 insereAluno(aluno);
             }
         }
@@ -169,7 +172,7 @@ public class AlunoDAO extends SQLiteOpenHelper{
         return alunos;
     }
 
-    public void deletar(Aluno aluno) {
+    public void deletaAluno(Aluno aluno) {
 
         SQLiteDatabase db = getWritableDatabase();
 
