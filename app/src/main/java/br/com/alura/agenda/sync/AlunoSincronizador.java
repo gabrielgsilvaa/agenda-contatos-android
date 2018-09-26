@@ -2,6 +2,7 @@ package br.com.alura.agenda.sync;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,21 +20,40 @@ public class AlunoSincronizador {
 
     private final Context context;
     private EventBus eventBus = EventBus.getDefault();
+    private AlunoPreferences preferences;
 
     public AlunoSincronizador(Context context) {
         this.context = context;
+        preferences = new AlunoPreferences(context);
     }
 
-    public void buscaAlunos() {
-        Call<AlunoDTO> lista = new RetrofitInicializador().getAlunoService().lista();
+    public void buscaTodosAlunos(){
+        if(preferences.temVersao()){
+            buscaNovos();
+        }else{
+            buscaAlunos();
+        }
+    }
 
-        lista.enqueue(new Callback<AlunoDTO>() {
+    private void buscaNovos() {
+        String versao = preferences.getVersao();
+        Call<AlunoDTO> call = new RetrofitInicializador().getAlunoService().novos(versao);
+        call.enqueue(buscaAlunosCallback());
+    }
+
+    private void buscaAlunos() {
+        Call<AlunoDTO> lista = new RetrofitInicializador().getAlunoService().lista();
+        lista.enqueue(buscaAlunosCallback());
+    }
+
+    @NonNull
+    private Callback<AlunoDTO> buscaAlunosCallback() {
+        return new Callback<AlunoDTO>() {
             @Override
             public void onResponse(Call<AlunoDTO> call, Response<AlunoDTO> response) {
                 AlunoDTO body = response.body();
                 String versao = body.getMomentoDaUltimaModificacao();
 
-                AlunoPreferences preferences = new AlunoPreferences(context);
                 preferences.salvaVersao(versao);
 
                 AlunoDAO alunoDAO = new AlunoDAO(context);
@@ -49,6 +69,6 @@ public class AlunoSincronizador {
                 Log.e("onFailure", "buscaAlunos " + t.getMessage());
                 eventBus.post(new AtualizarListaAlunoEvent());
             }
-        });
+        };
     }
 }
