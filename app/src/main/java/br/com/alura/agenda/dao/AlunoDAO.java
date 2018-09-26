@@ -22,7 +22,7 @@ public class AlunoDAO extends SQLiteOpenHelper{
 
 
     public AlunoDAO(Context context) {
-        super(context, "db_Agenda", null, 4);
+        super(context, "db_Agenda", null, 5);
     }
 
     @Override
@@ -34,7 +34,8 @@ public class AlunoDAO extends SQLiteOpenHelper{
                 "telefone TEXT, " +
                 "site TEXT, " +
                 "nota REAL, " +
-                "caminhoFoto TEXT)";
+                "caminhoFoto TEXT, " +
+                "sincronizado INT DEFAULT 0)";
         sqLiteDatabase.execSQL(sql);
     }
 
@@ -83,6 +84,13 @@ public class AlunoDAO extends SQLiteOpenHelper{
                     sqLiteDatabase.execSQL(atualizaIdAluno, new String[] { geraUUID(), aluno.getId()});
                     Log.i("aluno update: ", aluno.getId());
                 }
+            case 4:
+                String adicionaCampoSincronizado = "ALTER TABLE Alunos " +
+                        "ADD COLUMN sincronizado INT DEFAULT 0";
+                sqLiteDatabase.execSQL(adicionaCampoSincronizado);
+
+
+
 
         }
 
@@ -134,6 +142,7 @@ public class AlunoDAO extends SQLiteOpenHelper{
         dados.put("site", aluno.getSite());
         dados.put("nota", aluno.getNota());
         dados.put("caminhoFoto", aluno.getCaminhoFoto());
+        dados.put("sincronizado", aluno.getSincronizado());
         return dados;
     }
 
@@ -166,6 +175,7 @@ public class AlunoDAO extends SQLiteOpenHelper{
             aluno.setSite(c.getString(c.getColumnIndex("site")));
             aluno.setNota(c.getDouble(c.getColumnIndex("nota")));
             aluno.setCaminhoFoto(c.getString(c.getColumnIndex("caminhoFoto")));
+            aluno.setSincronizado(c.getInt(c.getColumnIndex("sincronizado")));
             alunos.add(aluno);
         }
         ;
