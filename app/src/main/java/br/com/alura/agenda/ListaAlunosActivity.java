@@ -63,7 +63,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 sincronizador.buscaTodosAlunos();
-                sincronizador.sincronizaAlunosInternos();
             }
         });
 
@@ -94,7 +93,6 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         registerForContextMenu(listaAlunos);
         sincronizador.buscaTodosAlunos();
-        sincronizador.sincronizaAlunosInternos();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
