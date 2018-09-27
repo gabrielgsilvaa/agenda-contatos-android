@@ -94,6 +94,8 @@ public class FormularioActivity extends AppCompatActivity {
                 Aluno aluno = helper.pegaAluno();
                 AlunoDAO dao = new AlunoDAO(this);
 
+                aluno.desincroniza();
+
                 if(aluno.getId() == null){
                     dao.insereAluno(aluno);
                 }else{

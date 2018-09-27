@@ -33,11 +33,7 @@ import br.com.alura.agenda.adapter.AlunosAdapter;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.events.AtualizarListaAlunoEvent;
 import br.com.alura.agenda.modelo.Aluno;
-import br.com.alura.agenda.retrofit.RetrofitInicializador;
 import br.com.alura.agenda.sync.AlunoSincronizador;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
@@ -47,7 +43,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
     private final AlunoSincronizador sincronizador = new AlunoSincronizador(this);
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
 
@@ -67,6 +63,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 sincronizador.buscaTodosAlunos();
+                sincronizador.sincronizaAlunosInternos();
             }
         });
 
@@ -97,6 +94,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
         registerForContextMenu(listaAlunos);
         sincronizador.buscaTodosAlunos();
+        sincronizador.sincronizaAlunosInternos();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -110,6 +108,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         List<Aluno> alunos = dao.buscaAlunos();
 
         for(Aluno aluno : alunos){
+            Log.i("nome do aluno? ", String.valueOf(aluno.getNome()));
             Log.i("id do aluno? ", String.valueOf(aluno.getId()));
             Log.i("sync aluno? ", String.valueOf(aluno.getSincronizado()));
         }
@@ -176,28 +175,12 @@ public class ListaAlunosActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
 
-                Call<Void> deleta = new RetrofitInicializador().getAlunoService().deleta(aluno.getId());
+                AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
+                dao.deletaAluno(aluno);
+                dao.close();
+                carregaLista();
 
-                deleta.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-
-                        AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
-                        dao.deletaAluno(aluno);
-                        dao.close();
-                        carregaLista();
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-
-                        Toast.makeText(ListaAlunosActivity.this,
-                                "Não foi possível remover o aluno", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-
+                sincronizador.deletaAluno(aluno);
 
                 Toast.makeText(ListaAlunosActivity.this, "Deletado Aluno '"+aluno.getNome()+"', com sucesso", Toast.LENGTH_SHORT).show();
 

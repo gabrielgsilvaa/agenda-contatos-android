@@ -1,0 +1,5 @@
+
+gsquid:S1301Z"KReplace this "switch" statement by "if" statements to increase readability.(ψε΄΅ÿÿÿÿÿ
+bsquid:CommentedOutCodeLine:"<This block of commented-out lines of code should be removed.(‹ψ™†
+U"squid:SwitchLastCaseIsDefaultCheckZ""Add a default case to this switch.(ψε΄΅ÿÿÿÿÿ
+esquid:MaximumInheritanceDepth"<This class has 7 parents which is greater than 5 authorized.(Τ¤§υ

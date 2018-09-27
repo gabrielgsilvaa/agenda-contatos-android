@@ -4,12 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
+import br.com.alura.agenda.ListaAlunosActivity;
 import br.com.alura.agenda.dao.AlunoDAO;
 import br.com.alura.agenda.dto.AlunoDTO;
 import br.com.alura.agenda.events.AtualizarListaAlunoEvent;
+import br.com.alura.agenda.modelo.Aluno;
 import br.com.alura.agenda.preferences.AlunoPreferences;
 import br.com.alura.agenda.retrofit.RetrofitInicializador;
 import retrofit2.Call;
@@ -70,5 +75,45 @@ public class AlunoSincronizador {
                 eventBus.post(new AtualizarListaAlunoEvent());
             }
         };
+    }
+
+    public void sincronizaAlunosInternos(){
+        final AlunoDAO alunoDAO = new AlunoDAO(context);
+
+        List<Aluno> alunos = alunoDAO.listaNaoSincronizados();
+
+        Call<AlunoDTO> call = new RetrofitInicializador().getAlunoService().atualiza(alunos);
+
+        call.enqueue(new Callback<AlunoDTO>() {
+            @Override
+            public void onResponse(Call<AlunoDTO> call, Response<AlunoDTO> response) {
+                AlunoDTO alunoDTO = response.body();
+                alunoDAO.sincronizaAluno(alunoDTO.getAlunos());
+                alunoDAO.close();
+            }
+
+            @Override
+            public void onFailure(Call<AlunoDTO> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void deletaAluno(final Aluno aluno) {
+        Call<Void> deleta = new RetrofitInicializador().getAlunoService().deleta(aluno.getId());
+
+        deleta.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                AlunoDAO alunoDAO = new AlunoDAO(context);
+                alunoDAO.deletaAluno(aluno);
+                alunoDAO.close();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
     }
 }

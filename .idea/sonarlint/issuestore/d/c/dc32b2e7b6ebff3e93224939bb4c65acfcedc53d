@@ -1,0 +1,7 @@
+
+zsquid:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(Éõ½ëþÿÿÿÿ8¶«ä™á,
+`squid:S1858"?"getId" returns a string, there's no need to call "toString()".(ëþÒîøÿÿÿÿ8¶«ä™á,
+hsquid:S1192"GDefine a constant instead of duplicating this literal "Alunos" 3 times.(Âç®¤ùÿÿÿÿ8¶«ä™á,
+Psquid:EmptyStatementUsageCheck"Remove this empty statement.(Åñ­õþÿÿÿÿ8¶«ä™á,
+U"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(Â©Û§8¶«ä™á,
+`squid:S1858"?"getId" returns a string, there's no need to call "toString()".(ëþÒîøÿÿÿÿ8¶«ä™á,
