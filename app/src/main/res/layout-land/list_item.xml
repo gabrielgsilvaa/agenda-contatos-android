@@ -9,7 +9,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/person"
-        android:id="@+id/item_foto"/>
+        android:id="@+id/item_foto"
+        android:background="@color/colorAccent"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
